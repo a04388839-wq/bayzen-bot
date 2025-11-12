@@ -1149,12 +1149,14 @@ async def handle_registration_stage(update: Update, context: ContextTypes.DEFAUL
     }
     
     # Соответствие этапов и фото из папки images
+    # Используем абсолютный путь относительно рабочей директории
+    base_path = os.path.dirname(os.path.abspath(__file__))
     stage_images = {
-        'id_front': 'images/1.jpg',
-        'id_back': 'images/2.jpg',
-        'address': 'images/3.jpg',
-        'passport_photo': 'images/4.jpg',
-        'location': 'images/5.jpg'
+        'id_front': os.path.join(base_path, 'images', '1.jpg'),
+        'id_back': os.path.join(base_path, 'images', '2.jpg'),
+        'address': os.path.join(base_path, 'images', '3.jpg'),
+        'passport_photo': os.path.join(base_path, 'images', '4.jpg'),
+        'location': os.path.join(base_path, 'images', '5.jpg')
     }
     
     stage_states = {
@@ -1203,7 +1205,9 @@ async def handle_registration_stage(update: Update, context: ContextTypes.DEFAUL
     # Если есть фото для этого этапа и есть message_id для редактирования
     if stage in stage_images and edit_message_id:
         image_path = stage_images[stage]
+        logger.info(f"Попытка загрузить изображение для этапа {stage}: {image_path}")
         if os.path.exists(image_path):
+            logger.info(f"Изображение найдено: {image_path}")
             try:
                 # Редактируем сообщение, отправляя фото с текстом
                 with open(image_path, 'rb') as photo:
@@ -1214,8 +1218,10 @@ async def handle_registration_stage(update: Update, context: ContextTypes.DEFAUL
                         reply_markup=reply_markup
                     )
                 save_bot_message_id(user_id, edit_message_id)
+                logger.info(f"Изображение успешно отправлено для этапа {stage}")
                 return
-            except Exception:
+            except Exception as e:
+                logger.error(f"Ошибка при редактировании сообщения с фото: {e}")
                 # Если не удалось отредактировать медиа, отправляем новое фото
                 try:
                     with open(image_path, 'rb') as photo:
@@ -1227,14 +1233,47 @@ async def handle_registration_stage(update: Update, context: ContextTypes.DEFAUL
                             parse_mode='HTML'
                         )
                         save_bot_message_id(user_id, sent_msg.message_id)
+                    logger.info(f"Изображение отправлено как новое сообщение для этапа {stage}")
                     # Удаляем старое сообщение
                     try:
                         await context.bot.delete_message(chat_id=chat_id, message_id=edit_message_id)
                     except Exception:
                         pass
                     return
-                except Exception:
+                except Exception as e2:
+                    logger.error(f"Ошибка при отправке нового фото: {e2}")
                     pass
+        else:
+            logger.warning(f"Изображение не найдено по пути: {image_path}")
+            # Пробуем альтернативные пути
+            alt_paths = [
+                os.path.join('images', os.path.basename(image_path)),
+                os.path.join('/app', 'images', os.path.basename(image_path)),
+                image_path.replace(base_path, ''),
+                'images/' + os.path.basename(image_path)
+            ]
+            for alt_path in alt_paths:
+                if os.path.exists(alt_path):
+                    logger.info(f"Найдено изображение по альтернативному пути: {alt_path}")
+                    try:
+                        with open(alt_path, 'rb') as photo:
+                            sent_msg = await context.bot.send_photo(
+                                chat_id=chat_id,
+                                photo=photo,
+                                caption=text,
+                                reply_markup=reply_markup,
+                                parse_mode='HTML'
+                            )
+                            save_bot_message_id(user_id, sent_msg.message_id)
+                        logger.info(f"Изображение отправлено с альтернативного пути: {alt_path}")
+                        try:
+                            await context.bot.delete_message(chat_id=chat_id, message_id=edit_message_id)
+                        except Exception:
+                            pass
+                        return
+                    except Exception as e:
+                        logger.error(f"Ошибка при отправке с альтернативного пути {alt_path}: {e}")
+                        continue
     
     # Если нет фото или не удалось отправить фото, редактируем текст
     # Если предыдущее сообщение было с фото, а текущий этап без фото, удаляем старое и отправляем новое
