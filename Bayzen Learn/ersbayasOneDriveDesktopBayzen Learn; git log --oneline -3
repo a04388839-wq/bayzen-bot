@@ -1,0 +1,20 @@
+125f14e|svbdjeksh.sk.v@gmail.com|reset: moving to 125f14e
+0c4477e|a04388839@gmail.com|commit: Исправлена версия Python для Netlify: добавлены .python-version, обновлен runtime.txt и netlify.toml, создана веб-версия бота
+0a2a837|a04388839@gmail.com|commit: Удален токен бота из кода для безопасности, добавлен .env.example
+d34b3c8|a04388839@gmail.com|Branch: renamed refs/heads/master to refs/heads/main
+d34b3c8|a04388839@gmail.com|commit: Добавлены конфигурации для деплоя: Railway, Render, Fly.io, улучшена обработка регистрации и навигации по заявкам
+125f14e|svbdjeksh.sk.v@gmail.com|commit: Исправлена навигация по заявкам и обработка регистрации: добавлено автоматическое удаление документов при переключении заявок, исправлена обработка кнопки 'Начать' в регистрации, улучшена навигация по индексам заявок
+9458012|svbdjeksh.sk.v@gmail.com|commit (amend): Улучшена админ-панель: добавлена пагинация заявок и исправлена отправка файлов
+e665a48|svbdjeksh.sk.v@gmail.com|commit: Улучшена админ-панель: добавлена пагинация заявок и исправлена отправка файлов
+c9fd79e|svbdjeksh.sk.v@gmail.com|commit (amend): Исправлена логика работы по памяти для этапов 5-7, обновлен текст банковских карт, убраны лишние отступы
+9327e36|svbdjeksh.sk.v@gmail.com|commit: Исправлена логика работы по памяти для этапов 5-7 регистрации
+ac438ba|svbdjeksh.sk.v@gmail.com|commit: Обновлены тексты всех этапов регистрации, улучшена навигация
+a16d1f6|svbdjeksh.sk.v@gmail.com|commit (amend): Обновлена регистрация: редактирование сообщений, примеры фото, исправлена проблема с фото на главной странице
+7a51bc2|svbdjeksh.sk.v@gmail.com|commit: Обновлена регистрация: редактирование сообщений, примеры фото, улучшенный текст
+d85c757|svbdjeksh.sk.v@gmail.com|reset: moving to d85c757
+4d09e08|svbdjeksh.sk.v@gmail.com|reset: moving to HEAD
+4d09e08|svbdjeksh.sk.v@gmail.com|commit: Улучшена логика регистрации: единое окно, проверка документов, профессиональный UX
+d85c757|svbdjeksh.sk.v@gmail.com|commit: Восстановлены 11 страниц текста для кнопки Расчет дохода с пагинацией
+3956c61|svbdjeksh.sk.v@gmail.com|commit: Улучшен экран готовности: обновлен текст, кнопки в одной строке, при отказе отзывается доступ, исправлено название кнопки
+c22fe50|svbdjeksh.sk.v@gmail.com|commit: Убрал детальный текст результата калькулятора и добавил экран подтверждения готовности
+02ffd23|svbdjeksh.sk.v@gmail.com|commit: Add income calculator with detailed instructions and automatic data collection

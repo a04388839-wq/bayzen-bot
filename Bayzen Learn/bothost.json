@@ -1,0 +1,7 @@
+{
+  "type": "telegram_bot",
+  "language": "python",
+  "start_command": "python bot.py",
+  "build_command": "pip install -r requirements.txt"
+}
+
